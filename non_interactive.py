@@ -2,6 +2,7 @@ import argparse
 import sys
 from msgs import show_banner, log
 from tor_search import search, check_onion, live_check
+from utils import is_valid_onion
 import interactive
 import time
 
@@ -195,17 +196,24 @@ def run(args):
 
         #########
 
+
         if args.live:
             print(log(f"Checking onions if Live....", "info"))
             live_onion = set()
             for onion in onions:
                 if check_onion(onion):
-                    if not args.quiet or not args.output_live:
+                    if args.output_live:
+                        display = log(f"live : ", "info") + onion
+                        for i in range(1, len(display)+1):
+                            print(display[:i], end="\r", flush=True)
+                            time.sleep(0.05)
+                    if not args.output_live:
                         print(log(f"live : {onion}", "info"))
                     
                     live_onion.add(onion)
 
             if args.output_live:
+                print()
                 with open(args.output_live, "a", encoding="utf-8") as file:
                     for onion in live_onion:
                         file.write(onion + "\n")
@@ -229,11 +237,21 @@ def run(args):
             print(log(f"File not found: {args.check_list}", "error"))
             sys.exit(1)
 
-        with open(args.output_live or args.output, "a", encoding="utf-8") as file:
-            for onion in onions_to_check:
-                if (args.output_live or args.output) and live_check(onion, args.quiet):
+
+        print(onions_to_check)
+        live_onion = set()
+
+        for onion in onions_to_check:
+            if is_valid_onion(onion):
+                if check_onion(onion):
+                    live_onion.add(onion)
+                    if not args.output or args.output_live:
+                        print(log(log(f"Found live : {address}", "success")))
+
+        if args.output_live or args.output:
+            with open(args.output or args.output_live, "a", encoding="utf-8") as file:
+                for onion in live_onion:
                     file.write(onion + "\n")
 
-            if args.output_live or args.output:
-                print(f"Live Onions Saved to {args.output_live or args.output}", "info")
+
 
