@@ -191,21 +191,27 @@ def run(args):
                 for onion in onions:
                     file.write(onion + "\n")
 
-            print(log(f"Fetched Onions Saved to {args.output}.", "info"))
+            print(log(f"Fetched Onions Saved to {args.output}.", "success"))
 
+        #########
 
         if args.live:
             print(log(f"Checking onions if Live....", "info"))
-            with open(args.output_live, "a", encoding="utf-8") as file:
-                for onion in onions:
-                    if check_onion(onion):
-                        if not args.quiet:
-                            print(log(f"live : {onion}", "info"))
-                        if args.output_live:
-                            file.write(onion + "\n")
-            
+            live_onion = set()
+            for onion in onions:
+                if check_onion(onion):
+                    if not args.quiet or not args.output_live:
+                        print(log(f"live : {onion}", "info"))
+                    
+                    live_onion.add(onion)
+
             if args.output_live:
-                print(log(f"Live Onions Saved to {args.output_live}.", "info"))
+                with open(args.output_live, "a", encoding="utf-8") as file:
+                    for onion in live_onion:
+                        file.write(onion + "\n")
+
+                print(log(f"Live Onions Saved to {args.output_live}.", "success"))
+
 
         sys.exit()
 
