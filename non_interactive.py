@@ -150,7 +150,7 @@ def valid_source(source):
 
 def run(args):
     
-
+    # If no arguments passed, run interactive mode and exit
     if args is None:
         interactive.run()
         sys.exit()
@@ -158,15 +158,18 @@ def run(args):
     if not args.quiet:
         show_banner()
 
+     # --- Case: Search query provided ---
     if args.query:
 
         if args.sources is not None:
             valid_source(args.sources)
         
         print(log(f"Searching {args.query} for '{args.sources}'...", "info"))
+
         onions = search(args.query, args.sources)
         print(log(f"Found {len(onions)} potential onion addresses.", "success"))
 
+        # Handle no results scenario
         if len(onions) == 0:
             print(log(f"Might some error.......", "warn"))
             print(log(f"Or the query has no result.", "info"))
@@ -174,6 +177,7 @@ def run(args):
             time.sleep(2)
             sys.exit()
 
+        # --- Case: Save fetched onions to a file ---
         if args.output:
             print(log(f"Fetching Onion....", "info"))
             with open(args.output, "a", encoding="utf-8") as file:
@@ -183,7 +187,6 @@ def run(args):
                     file.write(onion + "\n")
 
             print(log(f"Fetched Onions Saved to {args.output}.", "info"))
-
 
         if args.live:
             print(log(f"Checking onions if Live....", "info"))
@@ -200,12 +203,13 @@ def run(args):
 
         sys.exit()
 
+    # --- Case: Single onion check ---
     if args.check:
         _ = live_check(args.check)
 
+     # --- Case: Check list of onions from a file ---
     if args.check_list:
 
-        
         try:
             with open(args.check_list, "r", encoding="utf-8") as f:
                 onions_to_check = [line.strip() for line in f if line.strip()]
