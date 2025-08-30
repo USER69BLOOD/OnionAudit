@@ -67,7 +67,7 @@ python3 main.py -i
 ### Non-Interactive CLI Mode
 Basic search example:
 ```bash
-python3 main.py --query "bitcoin" --sources Ahmia,TORCH --output fetched.txt
+python3 main.py --query "bitcoin" --sources AHMIA,TORCH --output fetched.txt
 ```
 
 Check if live onions exist:
@@ -145,8 +145,8 @@ If you’re not sure where to start, or just want to explore and test with some 
 
 ## License
 
-MIT License © [USER69BLOOD]
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**MIT License © USER69BLOOD** — see the [LICENSE](LICENSE) file for details.
+
 
 
 ## Support My Work
