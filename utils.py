@@ -1,6 +1,6 @@
 import os
 import re
-import tor_search
+
 from msgs import log
 
 def is_valid_onion(url: str) -> bool:
@@ -21,17 +21,4 @@ def clean_url(url: str) -> str:
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
-def live_check(address, quiet):
-    if is_valid_onion(address):
-        if tor_search.check_onion(address):
-            if not quiet:
-                print(log(f"Found live : {address}", "success"))
-            return True
-        else:
-            if not quiet:
-                print(log(f"Not live : {address}"), "error")
-            return False
-    else:
-        print(log(f"Error address : {address}", "error"))
-        return False
 

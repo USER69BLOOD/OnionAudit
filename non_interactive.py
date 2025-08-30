@@ -1,9 +1,9 @@
 import argparse
 import sys
 from msgs import show_banner, log
-from tor_search import search, check_onion
+from tor_search import search, check_onion, live_check
 import interactive
-from utils import live_check
+import time
 
 def parse_args():
     """
@@ -205,7 +205,7 @@ def run(args):
 
     # --- Case: Single onion check ---
     if args.check:
-        _ = live_check(args.check)
+        _ = live_check(args.check, False)
 
      # --- Case: Check list of onions from a file ---
     if args.check_list:

@@ -3,7 +3,7 @@ import re
 import json
 import random
 from msgs import log
-from utils import clean_url
+from utils import clean_url, is_valid_onion
 import time
 proxies = {
     'http': 'socks5h://127.0.0.1:9050',
@@ -31,6 +31,21 @@ def check_onion(url):
     except Exception:
         return False
 
+def live_check(address, quiet):
+    if is_valid_onion(address):
+        if check_onion(address):
+            if not quiet:
+                print(log(f"Found live : {address}", "success"))
+            return True
+        else:
+            if not quiet:
+                print(log(f"Not live : {address}"), "error")
+            return False
+    else:
+        print(log(f"Error address : {address}", "error"))
+        return False
+
+
 def search(query, sources: str | None = None):
     
     onions = set()
@@ -48,14 +63,12 @@ def search(query, sources: str | None = None):
 
 
     for source in [field.strip() for field in sources.split(",")]:
-
         try:
             url = source_map[source][0]
             if not check_onion(url):
                 print(log(f"Skipping source {source}...Not live."))
                 time.sleep(2)
                 continue
-            print(f"{url}/search{source_map[source][1]}={query}")
             r = requests.get(f"{url}/search{source_map[source][1]}={query}", headers=HEADERS, proxies=proxies, timeout=20)
             r.raise_for_status()
 

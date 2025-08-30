@@ -1,8 +1,8 @@
 from msgs import *
-from utils import clear_screen, is_valid_onion, live_check
+from utils import clear_screen, is_valid_onion
 import time
 import sys
-from tor_search import search, check_onion
+from tor_search import search, check_onion, live_check
 
 def run():
     onions = set()
