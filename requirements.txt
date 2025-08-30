@@ -1,0 +1,3 @@
+requests[socks]  # for HTTP requests over Tor
+colorama         # for colored terminal output
+
