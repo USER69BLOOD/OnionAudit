@@ -9,9 +9,9 @@
 ## Features
 
 - Search for `.onion` links from multiple sources:
-  - Ahmia
+  - AHMIA
   - TOR66
-  - Torch
+  - TORCH
 - Validate if `.onion` links are live.
 - Save results to files:
   - Fetched onions
@@ -97,7 +97,7 @@ python3 main.py --query "bitcoin" --quiet --output fetched.txt
 |----------|-------------|
 | `-i`, `--interactive` | Run in interactive mode |
 | `-q`, `--query` | Search keyword |
-| `--sources` | Comma-separated sources: Ahmia, TOR66, TORCH |
+| `--sources` | Comma-separated sources: AHMIA, TOR66, TORCH (Defaul: All) |
 | `--live-only` | Check only live onions |
 | `--check` | Check a single onion URL |
 | `--check-list` | Check onions from a file |

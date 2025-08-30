@@ -10,7 +10,7 @@ def parse_args():
     Handles CLI arguments for OnionAudit.
     Returns a namespace of parsed arguments.
     """
-    SOURCE = ["Ahmia", "TOR66", "Torch"]
+    SOURCE = ["AHMIA", "TOR66", "TORCH"]
 
     parser = argparse.ArgumentParser(
         description="OnionAudit - Search and validate .onion links"
@@ -30,7 +30,6 @@ def parse_args():
     parser.add_argument(
         "--sources",
         type=str,
-        nargs="+",
         help=f"Custom sources to search available: {','.join(SOURCE)} (default: All)"
     )
     parser.add_argument(
@@ -143,9 +142,10 @@ def parse_and_validate_args(parser):
 def valid_source(source):
     known = ["AHMIA", "TOR66", "TORCH"]
 
-    for _ in [field.strip() for field in sources.split(",")]:
+    for _ in [field.strip() for field in source.split(",")]:
         if _ not in known:
             print(log("Sources Error.", "error"))
+            sys.exit()
 
 
 def run(args):
@@ -178,15 +178,21 @@ def run(args):
             sys.exit()
 
         # --- Case: Save fetched onions to a file ---
+        
+        print(log(f"Fetching Onion....", "info"))
+
+        if not args.quiet:
+            for onion in onions:
+                print(log(f"fetched onion : {onion}", "info"))
+
         if args.output:
-            print(log(f"Fetching Onion....", "info"))
+            print(log(f"Saving Onion....", "info"))
             with open(args.output, "a", encoding="utf-8") as file:
                 for onion in onions:
-                    if not args.quiet:
-                        print(log(f"fetched onion : {onion}", "info"))
                     file.write(onion + "\n")
 
             print(log(f"Fetched Onions Saved to {args.output}.", "info"))
+
 
         if args.live:
             print(log(f"Checking onions if Live....", "info"))
