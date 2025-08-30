@@ -39,7 +39,7 @@ def live_check(address, quiet):
             return True
         else:
             if not quiet:
-                print(log(f"Not live : {address}"), "error")
+                print(log(f"Not live : {address}", "error"))
             return False
     else:
         print(log(f"Error address : {address}", "error"))
